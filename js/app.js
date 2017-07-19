@@ -21,7 +21,9 @@ var locations = [
 // apply knockout bindings
 function initialize() {
     ko.applyBindings(new ViewModel());
-};
+}.fail(function() {
+    alert("Initialization Failed. Please refresh the page.")
+});;
 
 // initialize map and list
 function ViewModel() {
@@ -132,7 +134,7 @@ var PlaceModel = function(data) {
         alert("Foursquare API call has an error. Please refresh the page.")
     });
 
-    // trigger event when marker is clicked
+    // create event when marker is clicked
     self.marker.addListener('click', function() {
         map.setCenter(self.marker.getPosition());
         populateInfoWindow(this, infoWindow);
@@ -163,7 +165,7 @@ var PlaceModel = function(data) {
         }
     }
 
-    // create trigger when place is clicked on the list.
+    // trigger the event created above when a place is clicked on the list.
     self.showinfoWindow = function(place) {
         google.maps.event.trigger(self.marker, 'click');
     };
