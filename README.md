@@ -16,7 +16,7 @@ A **Neighborhood Map API Project**, a single-page Neighborhood Map application u
 * Open Terminal and type in `git clone` and paste the URL you copied.
 Ex.
 ```
-git clone https://github.com/RustyDude/ud036_StarterCode.git
+git clone https://github.com/RustyDude/neighborhood-mapping.git
 ```
 
 ### Setting up Foursquare API
