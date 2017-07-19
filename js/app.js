@@ -21,9 +21,7 @@ var locations = [
 // apply knockout bindings
 function initialize() {
     ko.applyBindings(new ViewModel());
-}.fail(function() {
-    alert("Initialization Failed. Please refresh the page.")
-});
+};
 
 // initialize map and list
 function ViewModel() {
