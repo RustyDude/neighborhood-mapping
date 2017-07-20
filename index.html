@@ -16,12 +16,12 @@
                 <input class="filter-text" data-bind="textInput: input" type="text" placeholder="Filter...">
             </div>
             <ul class="location-list" data-bind="foreach: filteredList">
-                <li class="location" data-bind="text: title, click: showinfoWindow"></li>
+                <li class="location" data-bind="text: title, click: listItemClicked"></li>
             </ul>
         </div>
         <div id="map"></div>
     </div>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry,drawing&key=AIzaSyAuc6xKDL-sV0-Tfxbmq4GyGkJ8jMy30hg&v=3&callback=initialize">
+    <script async defer src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry,drawing&key=AIzaSyAuc6xKDL-sV0-Tfxbmq4GyGkJ8jMy30hg&v=3&callback=initialize" onerror="mapfailure()">
     </script>
     <script src="js/knockout-3.4.2.js"></script>
     <script src='js/jquery-3.2.1.min.js'></script>

@@ -23,6 +23,10 @@ function initialize() {
     ko.applyBindings(new ViewModel());
 }
 
+function mapfailure() {
+    alert("Google Maps has failed. Please refresh the page.");
+}
+
 // initialize map and list
 function ViewModel() {
     var self = this;
@@ -102,7 +106,9 @@ var PlaceModel = function(data) {
         var id = place.id;
         var address = "";
         $.each(place.location.formattedAddress, function(key, value) {
-            address += value + " ";
+            if (value){
+                address += value + " ";
+            }
         });
 
 
@@ -119,24 +125,42 @@ var PlaceModel = function(data) {
                 pic = "http://1.bp.blogspot.com/-lKV5NwicXhE/UQN5E6kgxoI/AAAAAAAAAOs/zJluoYOdhJw/s150/NO-IMAGE-AVAILABLE-ICON-web.jpg";
                 self.image = pic;
             }
-            self.likes = place_info.likes.count;
+            if (place_info.likes.count) {
+                self.likes = place_info.likes.count;
+            } else {
+                self.likes = "N/A";
+            }
 
         }).fail(function() {
             alert("foursquare API request failed!");
         });
 
         self.address = address;
-        self.website_url = place.url;
+        if (place.url){
+            self.website_url = place.url;
+        } else {
+            self.website_url = 'https://foursquare.com/v/' + id; // fallbacks to a foursquare page of the place
+        }
 
     }).fail(function() {
         alert("Foursquare API call has an error. Please refresh the page.");
     });
 
+    // shows Infowindow and center marker on the map
+    function showInfoWindow(marker){
+        map.setCenter(marker.getPosition());
+        populateInfoWindow(marker, infoWindow);
+    }
+
     // create event when marker is clicked
     self.marker.addListener('click', function() {
-        map.setCenter(self.marker.getPosition());
-        populateInfoWindow(this, infoWindow);
+        setinfowindow(self.marker);
     });
+
+    // create event when item is clicked on the list.
+    self.listItemClicked = function(place) {
+        setinfowindow(self.marker);
+    };
 
     // create Infowindows for each marker
     function populateInfoWindow(marker, infowindow) {
@@ -145,7 +169,8 @@ var PlaceModel = function(data) {
             infowindow.close();
             infowindow.marker = marker;
 
-            infowindow.setContent('<div class="info-window-content"><a href="' + self.website_url + '"><div class="infoWindow"><h2><b>' + marker.title + '</b></h2></div>' +
+            infowindow.setContent(
+                '<div class="info-window-content"><a href="' + self.website_url + '"><div class="infoWindow"><h2><b>' + marker.title + '</b></h2></div>' +
                 '<div class="infowindow"><img "alt="place photo" src="' + self.image + '"></a></div>' +
                 '<div class="infowindow"><b>' + self.address + "</b></div>" +
                 '<div class="infowindow"><b>Likes:</b><em> ' + self.likes + "</em></div>");
@@ -162,10 +187,4 @@ var PlaceModel = function(data) {
             }, 1200);
         }
     }
-
-    // trigger the event created above when a place is clicked on the list.
-    self.showinfoWindow = function(place) {
-        google.maps.event.trigger(self.marker, 'click');
-    };
-
 };
