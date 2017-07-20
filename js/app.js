@@ -154,12 +154,12 @@ var PlaceModel = function(data) {
 
     // create event when marker is clicked
     self.marker.addListener('click', function() {
-        setinfowindow(self.marker);
+        showInfoWindow(self.marker);
     });
 
     // create event when item is clicked on the list.
     self.listItemClicked = function(place) {
-        setinfowindow(self.marker);
+        showInfoWindow(self.marker);
     };
 
     // create Infowindows for each marker
