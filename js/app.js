@@ -1,5 +1,9 @@
-'use strict';
+// 'use strict'; // Use the function form of "use strict".
 // initialize global variables
+// JSHint warning remedy globals
+/*global ko*/
+/*global google */
+/*global $ */
 var map;
 var infoWindow;
 // Create a new blank array for all the listing markers.
@@ -21,6 +25,7 @@ var locations = [
 
 // apply knockout bindings
 function initialize() {
+    'use strict';
     ko.applyBindings(new ViewModel());
 }
 
@@ -73,10 +78,10 @@ var PlaceModel = function(data) {
     var self = this;
     this.title = data.title;
     this.position = data.location;
-    this.image;
-    this.address;
-    this.likes;
-    this.website_url;
+    this.image = "";
+    this.address = "";
+    this.likes = "";
+    this.website_url = "";
 
     var place = {
         map: map,
