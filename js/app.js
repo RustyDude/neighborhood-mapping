@@ -130,7 +130,7 @@ var PlaceModel = function(data) {
                 self.image = pic.prefix + "150x150" + pic.suffix;
             } else {
                 // default image when foursquare cannot provide a picture.
-                pic = "http://1.bp.blogspot.com/-lKV5NwicXhE/UQN5E6kgxoI/AAAAAAAAAOs" +
+                pic = "https://1.bp.blogspot.com/-lKV5NwicXhE/UQN5E6kgxoI/AAAAAAAAAOs" +
                     "/zJluoYOdhJw/s150/NO-IMAGE-AVAILABLE-ICON-web.jpg";
                 self.image = pic;
             }
