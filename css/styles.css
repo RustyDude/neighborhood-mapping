@@ -35,7 +35,7 @@ li {
     list-style-type: none;
 }
 
-#map {
+.map-canvas {
     width: 80%;
     height: 100%;
 }
