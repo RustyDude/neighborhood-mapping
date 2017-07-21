@@ -1,3 +1,4 @@
+'use strict;'
 // initialize global variables
 var map;
 var infoWindow;
@@ -27,17 +28,21 @@ function mapfailure() {
     alert("Google Maps has failed. Please refresh the page.");
 }
 
+function setMap() {
+    map = new google.maps.Map(document.getElementById('map'), {
+        center: { lat: 40.7413549, lng: -73.9980244 }, // initialize map center
+        zoom: 13,
+    });
+}
+
 // initialize map and list
 function ViewModel() {
     var self = this;
     this.input = ko.observable("");
     this.placesList = ko.observableArray([]);
 
-    // initialize map center
-    map = new google.maps.Map(document.getElementById('map'), {
-        center: { lat: 40.7413549, lng: -73.9980244 },
-        zoom: 13,
-    });
+    // setup google map
+    setMap();
 
     // create location instances
     locations.forEach(function(place) {
@@ -99,21 +104,24 @@ var PlaceModel = function(data) {
     infoWindow = new google.maps.InfoWindow();
 
     // setup foursquare API endpoint
-    var fs_url = 'https://api.foursquare.com/v2/venues/search?ll=' + self.position.lat + ',' + self.position.lng + '&query=' + self.title + '&client_id=' + fs_client_id + '&client_secret=' + fs_client_secret + '&v=20160118';
+    var fs_url = 'https://api.foursquare.com/v2/venues/search?ll=' + self.position.lat +
+        ',' + self.position.lng + '&query=' + self.title + '&client_id=' + fs_client_id +
+        '&client_secret=' + fs_client_secret + '&v=20160118';
 
     $.getJSON(fs_url, function(data) {
         var place = data.response.venues[0];
         var id = place.id;
         var address = "";
         $.each(place.location.formattedAddress, function(key, value) {
-            if (value){
+            if (value) {
                 address += value + " ";
             }
         });
 
 
         // setup place endpoint acquiring photo and likes count
-        var fs_place_info = 'https://api.foursquare.com/v2/venues/' + id + '?client_id=' + fs_client_id + '&client_secret=' + fs_client_secret + '&v=20160118';
+        var fs_place_info = 'https://api.foursquare.com/v2/venues/' + id + '?client_id=' +
+            fs_client_id + '&client_secret=' + fs_client_secret + '&v=20160118';
         $.getJSON(fs_place_info, function(data) {
             var place_info = data.response.venue;
             var pic;
@@ -122,7 +130,8 @@ var PlaceModel = function(data) {
                 self.image = pic.prefix + "150x150" + pic.suffix;
             } else {
                 // default image when foursquare cannot provide a picture.
-                pic = "http://1.bp.blogspot.com/-lKV5NwicXhE/UQN5E6kgxoI/AAAAAAAAAOs/zJluoYOdhJw/s150/NO-IMAGE-AVAILABLE-ICON-web.jpg";
+                pic = "http://1.bp.blogspot.com/-lKV5NwicXhE/UQN5E6kgxoI/AAAAAAAAAOs" +
+                    "/zJluoYOdhJw/s150/NO-IMAGE-AVAILABLE-ICON-web.jpg";
                 self.image = pic;
             }
             if (place_info.likes.count) {
@@ -136,7 +145,7 @@ var PlaceModel = function(data) {
         });
 
         self.address = address;
-        if (place.url){
+        if (place.url) {
             self.website_url = place.url;
         } else {
             self.website_url = 'https://foursquare.com/v/' + id; // fallbacks to a foursquare page of the place
@@ -147,7 +156,7 @@ var PlaceModel = function(data) {
     });
 
     // shows Infowindow and center marker on the map
-    function showInfoWindow(marker){
+    function showInfoWindow(marker) {
         map.setCenter(marker.getPosition());
         populateInfoWindow(marker, infoWindow);
     }
@@ -170,7 +179,8 @@ var PlaceModel = function(data) {
             infowindow.marker = marker;
 
             infowindow.setContent(
-                '<div class="info-window-content"><a href="' + self.website_url + '"><div class="infoWindow"><h2><b>' + marker.title + '</b></h2></div>' +
+                '<div class="info-window-content"><a href="' + self.website_url +
+                '"><div class="infoWindow"><h2><b>' + marker.title + '</b></h2></div>' +
                 '<div class="infowindow"><img "alt="place photo" src="' + self.image + '"></a></div>' +
                 '<div class="infowindow"><b>' + self.address + "</b></div>" +
                 '<div class="infowindow"><b>Likes:</b><em> ' + self.likes + "</em></div>");
