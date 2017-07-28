@@ -4,7 +4,7 @@ A **Neighborhood Map API Project**, a single-page Neighborhood Map application u
 
 ## Get it started.
 
-* You may run the application here: https://rustydude.github.io/neighborhood-mapping/
+* You may run the application here: https://russeladrianlopez.github.io/neighborhood-mapping/
 * However, Foursquare API has [rate limits](https://developer.foursquare.com/overview/ratelimits), it may result for the application to fail if the request exceeds the limit.
 * Alternatively, to make it work just follow the instructions below.
 
